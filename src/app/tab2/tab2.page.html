@@ -14,7 +14,10 @@
   <ion-grid>
     <ion-row>
       @for (photo of photoService.photos; track photo.filepath) {
-      <ion-col size="6" (click)="showActionSheet(photo, $index)">
+      <ion-col
+        size="6"
+        (click)="showActionSheet(photo, photoService.photos.indexOf(photo))"
+      >
         @if (photo.webviewPath) {
         <ion-img [src]="photo.webviewPath" alt="Foto" class="photo-thumb" />
         }
