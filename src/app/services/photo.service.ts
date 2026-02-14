@@ -8,7 +8,12 @@ import {
 } from '@capacitor/camera';
 import { UserPhoto } from '../interfaces/photo';
 
-import { Filesystem, Directory, ReadFileResult } from '@capacitor/filesystem';
+import {
+  Filesystem,
+  Directory,
+  ReadFileResult,
+  WriteFileResult,
+} from '@capacitor/filesystem';
 
 import { GetResult, Preferences } from '@capacitor/preferences';
 
@@ -65,18 +70,23 @@ export class PhotoService {
     }
 
     const fileName: string = Date.now() + '.jpeg';
-    await Filesystem.writeFile({
+    const savedFile: WriteFileResult = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
       directory: Directory.Data,
     });
 
-    const userPhoto: UserPhoto = {
-      filepath: fileName,
-      webviewPath: photo.webPath,
-    };
-
-    return userPhoto;
+    if (this.platform.is('hybrid')) {
+      return {
+        filepath: savedFile.uri,
+        webviewPath: Capacitor.convertFileSrc(savedFile.uri),
+      };
+    } else {
+      return {
+        filepath: fileName,
+        webviewPath: photo.webPath,
+      };
+    }
   }
 
   private convertBlobToBase64(blob: Blob): Promise<string> {
