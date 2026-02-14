@@ -11,11 +11,13 @@ import {
   providedIn: 'root',
 })
 export class PhotoService {
-  public async addNewToGalery() {
+  public async addNewToGalery(): Promise<Photo> {
     const capturedPhoto: Photo = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
       quality: 100,
     });
+
+    return capturedPhoto;
   }
 }

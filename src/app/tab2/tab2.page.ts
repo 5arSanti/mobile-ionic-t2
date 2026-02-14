@@ -8,6 +8,7 @@ import {
   IonFabButton,
   IonIcon,
 } from '@ionic/angular/standalone';
+import { PhotoService } from '../services/photo.service';
 
 @Component({
   selector: 'app-tab2',
@@ -24,5 +25,10 @@ import {
   ],
 })
 export class Tab2Page {
-  constructor() {}
+  constructor(private readonly photoService: PhotoService) {}
+
+  async addNewToGalery() {
+    const newPhoto = await this.photoService.addNewToGalery();
+    console.log(newPhoto);
+  }
 }
