@@ -72,31 +72,15 @@ export class PhotoService {
     const { value: photoList }: GetResult = await Preferences.get({
       key: this.PHOTOS_STORAGE,
     });
-
     this.photos = (photoList ? JSON.parse(photoList) : []) as UserPhoto[];
 
-    const loaded: UserPhoto[] = [];
     for (let photo of this.photos) {
-      try {
-        const readFile: ReadFileResult = await Filesystem.readFile({
-          path: photo.filepath,
-          directory: Directory.Data,
-        });
+      const readFile: ReadFileResult = await Filesystem.readFile({
+        path: photo.filepath,
+        directory: Directory.Data,
+      });
 
-        let webviewPath: string;
-        if (readFile.data instanceof Blob) {
-          webviewPath = await this.convertBlobToBase64(readFile.data);
-        } else {
-          const data: string = readFile.data as string;
-          webviewPath = data.startsWith('data:')
-            ? data
-            : `data:image/jpeg;base64,${data}`;
-        }
-        loaded.push({ ...photo, webviewPath });
-      } catch {
-        loaded.push({ ...photo });
-      }
+      photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
     }
-    this.photos = loaded;
   }
 }
