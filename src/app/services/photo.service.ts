@@ -81,7 +81,14 @@ export class PhotoService {
         directory: Directory.Data,
       });
 
-      photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+      if (readFile.data instanceof Blob) {
+        photo.webviewPath = await this.convertBlobToBase64(readFile.data);
+      } else {
+        const data: string = readFile.data as string;
+        photo.webviewPath = data.startsWith('data:')
+          ? data
+          : `data:image/jpeg;base64,${data}`;
+      }
     }
   }
 }
