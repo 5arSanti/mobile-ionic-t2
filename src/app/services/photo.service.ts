@@ -16,7 +16,7 @@ import { GetResult, Preferences } from '@capacitor/preferences';
   providedIn: 'root',
 })
 export class PhotoService {
-  private photos: UserPhoto[] = [];
+  public photos: UserPhoto[] = [];
 
   private PHOTOS_STORAGE: string = 'photos';
 
@@ -72,6 +72,7 @@ export class PhotoService {
     const { value: photoList }: GetResult = await Preferences.get({
       key: this.PHOTOS_STORAGE,
     });
+    console.log(photoList);
 
     this.photos = (photoList ? JSON.parse(photoList) : []) as UserPhoto[];
 

@@ -7,6 +7,10 @@ import {
   IonFab,
   IonFabButton,
   IonIcon,
+  IonList,
+  IonItem,
+  IonImg,
+  IonLabel,
 } from '@ionic/angular/standalone';
 import { PhotoService } from '../services/photo.service';
 
@@ -22,10 +26,14 @@ import { PhotoService } from '../services/photo.service';
     IonFab,
     IonFabButton,
     IonIcon,
+    IonList,
+    IonItem,
+    IonImg,
+    IonLabel,
   ],
 })
 export class Tab2Page {
-  constructor(private readonly photoService: PhotoService) {}
+  constructor(public photoService: PhotoService) {}
 
   async ngOnInit() {
     await this.photoService.loadSaved();
