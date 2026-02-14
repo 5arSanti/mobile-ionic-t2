@@ -32,6 +32,6 @@ export class Tab2Page {
   }
 
   async addNewToGalery() {
-    const newPhoto = await this.photoService.addNewToGalery();
+    await this.photoService.addNewToGalery();
   }
 }
