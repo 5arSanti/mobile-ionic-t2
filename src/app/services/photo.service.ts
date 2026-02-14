@@ -8,9 +8,9 @@ import {
 } from '@capacitor/camera';
 import { UserPhoto } from '../interfaces/photo';
 
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem, Directory, ReadFileResult } from '@capacitor/filesystem';
 
-import { Preferences } from '@capacitor/preferences';
+import { GetResult, Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root',
@@ -66,5 +66,22 @@ export class PhotoService {
       };
       reader.readAsDataURL(blob);
     });
+  }
+
+  public async loadSaved(): Promise<void> {
+    const { value: photoList }: GetResult = await Preferences.get({
+      key: this.PHOTOS_STORAGE,
+    });
+
+    this.photos = (photoList ? JSON.parse(photoList) : []) as UserPhoto[];
+
+    for (let photo of this.photos) {
+      const readFile: ReadFileResult = await Filesystem.readFile({
+        path: photo.filepath,
+        directory: Directory.Data,
+      });
+
+      photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+    }
   }
 }
