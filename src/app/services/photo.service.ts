@@ -14,6 +14,8 @@ import { GetResult, Preferences } from '@capacitor/preferences';
 
 import { Platform } from '@ionic/angular';
 
+import { Capacitor } from '@capacitor/core';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,9 +48,21 @@ export class PhotoService {
   }
 
   public async savePicture(photo: Photo): Promise<UserPhoto> {
-    const response: Response = await fetch(photo.webPath!);
-    const blob: Blob = await response.blob();
-    const base64Data: string = (await this.convertBlobToBase64(blob)) as string;
+    let base64Data: string | Blob;
+
+    if (this.platform.is('hybrid')) {
+      const file: ReadFileResult = await Filesystem.readFile({
+        path: photo.path!,
+      });
+
+      base64Data = file.data;
+    } else {
+      const response: Response = await fetch(photo.webPath!);
+
+      const blob: Blob = await response.blob();
+
+      base64Data = (await this.convertBlobToBase64(blob)) as string;
+    }
 
     const fileName: string = Date.now() + '.jpeg';
     await Filesystem.writeFile({
