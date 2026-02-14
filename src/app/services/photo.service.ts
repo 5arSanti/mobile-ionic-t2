@@ -10,11 +10,15 @@ import { UserPhoto } from '../interfaces/photo';
 
 import { Filesystem, Directory } from '@capacitor/filesystem';
 
+import { Preferences } from '@capacitor/preferences';
+
 @Injectable({
   providedIn: 'root',
 })
 export class PhotoService {
   private photos: UserPhoto[] = [];
+
+  private PHOTOS_STORAGE: string = 'photos';
 
   public async addNewToGalery(): Promise<void> {
     const capturedPhoto: Photo = await Camera.getPhoto({
@@ -26,6 +30,11 @@ export class PhotoService {
     const savedPhoto: UserPhoto = await this.savePicture(capturedPhoto);
 
     this.photos.unshift(savedPhoto);
+
+    Preferences.set({
+      key: this.PHOTOS_STORAGE,
+      value: JSON.stringify(this.photos),
+    });
   }
 
   public async savePicture(photo: Photo): Promise<UserPhoto> {
