@@ -1,16 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonFab,
-  IonFabButton,
-  IonIcon,
-  IonList,
-  IonItem,
-  IonLabel,
-} from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonLabel, IonImg, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
 import { PhotoService } from '../services/photo.service';
 import { UserPhoto } from '../interfaces/photo';
 import { ActionSheetController } from '@ionic/angular';
@@ -27,10 +16,11 @@ import { ActionSheetController } from '@ionic/angular';
     IonFab,
     IonFabButton,
     IonIcon,
-    IonList,
-    IonItem,
-    IonLabel,
-  ],
+    IonImg,
+    IonGrid,
+    IonRow,
+    IonCol,
+],
 })
 export class Tab2Page {
   constructor(

@@ -11,16 +11,17 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    @for (photo of photoService.photos; track photo.filepath) {
-      <ion-item>
+  <ion-grid>
+    <ion-row>
+      @for (photo of photoService.photos; track photo.filepath) {
+      <ion-col size="6" (click)="showActionSheet(photo, $index)">
         @if (photo.webviewPath) {
-          <img [src]="photo.webviewPath" alt="Foto" class="photo-thumb" />
+        <ion-img [src]="photo.webviewPath" alt="Foto" class="photo-thumb" />
         }
-        <ion-label> {{ photo.filepath }} </ion-label>
-      </ion-item>
-    }
-  </ion-list>
+      </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="addNewToGalery()">
