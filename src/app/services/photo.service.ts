@@ -23,27 +23,29 @@ export class PhotoService {
       quality: 100,
     });
 
-    const savedPhoto = await this.savePicture(capturedPhoto);
+    const savedPhoto: UserPhoto = await this.savePicture(capturedPhoto);
 
     this.photos.unshift(savedPhoto);
   }
 
   public async savePicture(photo: Photo): Promise<UserPhoto> {
-    const response = await fetch(photo.webPath!);
-    const blob = await response.blob();
-    const base64Data = (await this.convertBlobToBase64(blob)) as string;
+    const response: Response = await fetch(photo.webPath!);
+    const blob: Blob = await response.blob();
+    const base64Data: string = (await this.convertBlobToBase64(blob)) as string;
 
-    const fileName = Date.now() + '.jpeg';
-    const savedFile = await Filesystem.writeFile({
+    const fileName: string = Date.now() + '.jpeg';
+    await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
       directory: Directory.Data,
     });
 
-    return {
+    const userPhoto: UserPhoto = {
       filepath: fileName,
       webviewPath: photo.webPath,
     };
+
+    return userPhoto;
   }
 
   private convertBlobToBase64(blob: Blob) {
