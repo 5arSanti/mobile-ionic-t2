@@ -106,13 +106,15 @@ export class PhotoService {
     });
     this.photos = (photoList ? JSON.parse(photoList) : []) as UserPhoto[];
 
-    for (let photo of this.photos) {
-      const readFile: ReadFileResult = await Filesystem.readFile({
-        path: photo.filepath,
-        directory: Directory.Data,
-      });
+    if (!this.platform.is('hybrid')) {
+      for (let photo of this.photos) {
+        const readFile: ReadFileResult = await Filesystem.readFile({
+          path: photo.filepath,
+          directory: Directory.Data,
+        });
 
-      photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+        photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+      }
     }
   }
 }
