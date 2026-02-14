@@ -48,12 +48,12 @@ export class PhotoService {
     return userPhoto;
   }
 
-  private convertBlobToBase64(blob: Blob) {
-    return new Promise((resolve, reject) => {
+  private convertBlobToBase64(blob: Blob): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onerror = reject;
       reader.onload = () => {
-        resolve(reader.result);
+        resolve(reader.result as string);
       };
       reader.readAsDataURL(blob);
     });
