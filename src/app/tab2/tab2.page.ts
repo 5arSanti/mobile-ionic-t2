@@ -27,6 +27,10 @@ import { PhotoService } from '../services/photo.service';
 export class Tab2Page {
   constructor(private readonly photoService: PhotoService) {}
 
+  async ngOnInit() {
+    await this.photoService.loadSaved();
+  }
+
   async addNewToGalery() {
     const newPhoto = await this.photoService.addNewToGalery();
   }
