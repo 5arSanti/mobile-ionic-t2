@@ -117,4 +117,22 @@ export class PhotoService {
       }
     }
   }
+
+  public async deletePhoto(photo: UserPhoto, position: number) {
+    this.photos.splice(position, 1);
+
+    Preferences.set({
+      key: this.PHOTOS_STORAGE,
+      value: JSON.stringify(this.photos),
+    });
+
+    const filename: string = photo.filepath.slice(
+      photo.filepath.lastIndexOf('/') + 1,
+    );
+
+    await Filesystem.deleteFile({
+      path: filename,
+      directory: Directory.Data,
+    });
+  }
 }
