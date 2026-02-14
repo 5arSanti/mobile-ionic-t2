@@ -72,7 +72,6 @@ export class PhotoService {
     const { value: photoList }: GetResult = await Preferences.get({
       key: this.PHOTOS_STORAGE,
     });
-    console.log(photoList);
 
     this.photos = (photoList ? JSON.parse(photoList) : []) as UserPhoto[];
 
