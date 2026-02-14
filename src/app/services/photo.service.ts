@@ -8,6 +8,8 @@ import {
 } from '@capacitor/camera';
 import { UserPhoto } from '../interfaces/photo';
 
+import { Filesystem, Directory } from '@capacitor/filesystem';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -27,9 +29,31 @@ export class PhotoService {
   }
 
   public async savePicture(photo: Photo): Promise<UserPhoto> {
+    const response = await fetch(photo.webPath!);
+    const blob = await response.blob();
+    const base64Data = (await this.convertBlobToBase64(blob)) as string;
+
+    const fileName = Date.now() + '.jpeg';
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Data,
+    });
+
     return {
-      filepath: '',
-      webviewPath: '',
+      filepath: fileName,
+      webviewPath: photo.webPath,
     };
+  }
+
+  private convertBlobToBase64(blob: Blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
   }
 }
