@@ -9,7 +9,6 @@ import {
   IonIcon,
   IonList,
   IonItem,
-  IonImg,
   IonLabel,
 } from '@ionic/angular/standalone';
 import { PhotoService } from '../services/photo.service';
@@ -28,7 +27,6 @@ import { PhotoService } from '../services/photo.service';
     IonIcon,
     IonList,
     IonItem,
-    IonImg,
     IonLabel,
   ],
 })

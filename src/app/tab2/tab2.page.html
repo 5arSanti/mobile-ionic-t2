@@ -12,10 +12,14 @@
   </ion-header>
 
   <ion-list>
-    <ion-item *ngFor="let photo of photoService.photos">
-      <ion-img [src]="photo.webviewPath" alt="Photo"></ion-img>
-      <ion-label> {{ photo.filepath }} </ion-label>
-    </ion-item>
+    @for (photo of photoService.photos; track photo.filepath) {
+      <ion-item>
+        @if (photo.webviewPath) {
+          <img [src]="photo.webviewPath" alt="Foto" class="photo-thumb" />
+        }
+        <ion-label> {{ photo.filepath }} </ion-label>
+      </ion-item>
+    }
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
